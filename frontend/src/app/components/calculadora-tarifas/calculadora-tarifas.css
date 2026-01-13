@@ -1,0 +1,219 @@
+/* 1. BASE Y CONTENEDORES */
+.calculator-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 20px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #2d3436;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.header-section h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #2d3436;
+  font-weight: 800;
+}
+
+.header-section h1 span {
+  background: linear-gradient(135deg, #007bff, #00d2ff);
+  background-clip: text; /* Estándar corregido */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title-underline {
+  width: 60px;
+  height: 4px;
+  background: #007bff;
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+/* 2. FORMULARIO (Ancho controlado) */
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+.form-content {
+  width: 100%;
+  max-width: 480px; /* Evita que la barra sea gigante */
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  border: 1px solid #f1f2f6;
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #2d3436;
+}
+
+.inputs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #4a4a4a; /* Contraste mejorado */
+  text-transform: uppercase;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* 3. AUTOCOMPLETE */
+.autocomplete-container { position: relative; }
+
+.suggestions-list {
+  position: absolute;
+  top: 105%;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 5px;
+  margin: 0;
+  border: 1px solid #eee;
+}
+
+.suggestions-list li {
+  padding: 12px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.suggestions-list li:hover { background: #f0f7ff; color: #007bff; }
+
+/* 4. BANNER DE ERROR */
+.error-banner {
+  background-color: #fff5f5;
+  color: #c0392b;
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 4px solid #e74c3c;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* 5. BOTÓN */
+.btn-calc {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-calc:hover:not(:disabled) { 
+  background: #0056b3; 
+  transform: translateY(-2px); 
+}
+
+/* 6. RESULTADOS Y TABLAS */
+.distribuidora-group {
+  background: white;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border-left: 5px solid #007bff;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+
+.total-destacado { color: #27ae60; font-weight: 800; }
+
+table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+th, td { padding: 12px; text-align: left; border-bottom: 1px solid #f1f2f6; }
+
+/* FECHA (Footer) */
+.footer-info {
+  text-align: right;
+  color: #2d3436; /* Mejorado */
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  padding: 10px 15px;
+  background: #f1f2f6;
+  border-radius: 8px;
+  display: block;
+}
+
+/* 7. TOOLTIPS */
+.tooltip-icon {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  background: #dfe6e9;
+  border-radius: 50%;
+  font-size: 11px;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+  position: relative;
+  margin-left: 6px;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 220px;
+  background: #2d3436;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+  font-weight: normal;
+}
+
+.tooltip-icon:hover .tooltip-text { visibility: visible; opacity: 1; }
