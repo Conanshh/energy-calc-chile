@@ -7,7 +7,10 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon --exec \"node --loader ts-node/esm --no-warnings\" src/index.ts"
+    "dev": "nodemon --exec \"node --loader ts-node/esm --no-warnings\" src/index.ts",
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "test:ui": "vitest --ui"
   },
   "keywords": [],
   "author": "",
@@ -20,12 +23,15 @@
     "puppeteer": "24.35.0"
   },
   "devDependencies": {
+    "@swc/core": "^1.15.8",
     "@types/cors": "2.8.19",
     "@types/express": "5.0.0",
     "@types/node": "22.10.7",
     "@types/pg": "8.11.10",
     "nodemon": "3.1.9",
     "ts-node": "10.9.2",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "unplugin-swc": "^1.5.9",
+    "vitest": "^4.0.17"
   }
 }
