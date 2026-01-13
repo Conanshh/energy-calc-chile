@@ -17,18 +17,23 @@ jobs:
           node-version: '20'
           
       - name: Install Dependencies
-        run: npm install
+        run: |
+          cd backend
+          npm install
         
       - name: Build Project
-        run: npm run build
-        
+        run: |
+          cd backend
+          npm run build
+      
+      - name: Install Browser for Scraper
+        run: |
+          cd backend
+          npx puppeteer browsers install chrome
+      
       - name: Run Script
         env:
-          # Aquí pasas tus variables de conexión a la BD
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          # Si usas host/user/pass separados:
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-        run: npm run refresh-tarifas
+        run: |
+          cd backend
+          npm run refresh-tarifas
