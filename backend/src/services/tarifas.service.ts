@@ -16,29 +16,51 @@ export const calcularConsumoDispositivo = async (
   const consumoMensualKwh = (watts * horasPorDia * diasMes) / 1000;
   const lowerComuna = comuna.trim().toLowerCase();
 
-  // 2. Revisar existencia y antigüedad
+  // 2. Revisar existencia y antigüedad en la DB
   const resComuna = await query(
     'SELECT id, ultima_actualizacion FROM comunas WHERE LOWER(nombre) = $1', 
     [lowerComuna]
   );
 
   let debeScrapear = false;
+
   if (resComuna.rows.length === 0) {
+    // Si la comuna no existe en nuestra DB, hay que buscarla afuera
     debeScrapear = true;
   } else {
+    // Si existe, revisamos qué tan vieja es la información.
+    // Usamos 15 días de margen para dar prioridad a la DB sobre el scraping lento.
     const ultimaAct = new Date(resComuna.rows[0].ultima_actualizacion);
     const diffDias = (new Date().getTime() - ultimaAct.getTime()) / (1000 * 3600 * 24);
-    if (diffDias > 7) debeScrapear = true;
+    
+    if (diffDias > 15) {
+      console.log(`⚠️ Datos de ${lowerComuna} antiguos (${Math.round(diffDias)} días). Actualizando...`);
+      debeScrapear = true;
+    }
   }
 
-  // 3. Scrapear si es necesario
+  // 3. Ejecutar Scraper solo si es estrictamente necesario
   if (debeScrapear) {
-    const scraped = await scrapeTarifas(comuna);
-    if (!scraped || scraped.length === 0) throw new Error("No se pudo obtener datos del sitio externo.");
-    await saveTarifasByComuna(comuna, scraped);
+    try {
+      console.log(`☁️ Iniciando scraping de emergencia para: ${lowerComuna}`);
+      const scraped = await scrapeTarifas(comuna);
+      
+      if (scraped && scraped.length > 0) {
+        await saveTarifasByComuna(comuna, scraped);
+      } else {
+        // Si el scraper falla pero tenemos datos viejos en la DB, los usamos igual
+        if (resComuna.rows.length === 0) {
+          throw new Error("No se pudo obtener datos y no hay registros previos.");
+        }
+        console.warn("Fallo el scraping, se usarán datos antiguos de la DB.");
+      }
+    } catch (error) {
+      console.error("Error en proceso de scraping de rescate:", error);
+      if (resComuna.rows.length === 0) throw error;
+    }
   }
 
-  // 4. Recuperar datos de DB (JOIN total para asegurar que leemos lo recién guardado)
+  // 4. Recuperar datos finales de la DB (lo que ya existía o lo recién guardado)
   const resData = await query(
     `SELECT t.rango_texto, t.valor_kwh, t.distribuidora, t.cargo_fijo, c.ultima_actualizacion 
      FROM tarifas t 
@@ -48,10 +70,10 @@ export const calcularConsumoDispositivo = async (
   );
 
   if (resData.rows.length === 0) {
-    throw new Error("No se encontraron tarifas para esta comuna tras el procesamiento.");
+    throw new Error("No se encontraron tarifas disponibles para esta comuna.");
   }
 
-  // 5. Agrupar por Distribuidora
+  // 5. Agrupar resultados por Distribuidora
   const gruposMap = new Map();
 
   resData.rows.forEach(row => {
@@ -76,6 +98,7 @@ export const calcularConsumoDispositivo = async (
     });
   });
 
+  // 6. Retornar objeto final estructurado
   return {
     meta: {
       comuna: comuna.toUpperCase(),

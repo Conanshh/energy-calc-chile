@@ -11,6 +11,7 @@
         <label class="input-label">Comuna de residencia</label>
         <input type="text" [(ngModel)]="comuna" placeholder="Ej: Recoleta..." 
                (input)="mostrarSugerencias.set(true)" (focus)="mostrarSugerencias.set(true)" class="input-main">
+        
         @if (mostrarSugerencias() && comunasFiltradas().length > 0 && comuna().length > 0) {
           <ul class="suggestions-list">
             @for (c of comunasFiltradas(); track c) {
@@ -25,7 +26,7 @@
           <label>Watts 
             <span class="tooltip-icon">
               <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
-              <span class="tooltip-text">Potencia del dispositivo.</span>
+              <span class="tooltip-text">Potencia del dispositivo (revisa la etiqueta).</span>
             </span>
           </label>
           <input type="number" [(ngModel)]="watts" placeholder="0">
@@ -34,7 +35,7 @@
           <label>Hrs/día 
             <span class="tooltip-icon">
               <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
-              <span class="tooltip-text">Horas de uso diario.</span>
+              <span class="tooltip-text">Horas de uso diario promedio.</span>
             </span>
           </label>
           <input type="number" [(ngModel)]="horas" placeholder="0">
@@ -43,7 +44,7 @@
           <label>Días/mes 
             <span class="tooltip-icon">
               <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
-              <span class="tooltip-text">Días de uso mensual.</span>
+              <span class="tooltip-text">Días de uso al mes.</span>
             </span>
           </label>
           <input type="number" [(ngModel)]="dias" placeholder="30">
@@ -79,35 +80,65 @@
         <h3>Resumen para {{ res.meta.comuna }}</h3>
         <p class="consumo-total">
           Consumo del equipo: <strong>{{ res.dispositivo.consumo_total_mes_kwh }} kWh/mes</strong>
+          <span class="tooltip-icon">
+            <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
+            <span class="tooltip-text">
+              <strong>Fórmula:</strong> ({{res.dispositivo.potencia_watts}}W × {{horas()}}h × {{dias()}}d) / 1000
+            </span>
+          </span>
         </p>
       </div>
 
       @for (grupo of res.grupos; track grupo.distribuidora) {
         <div class="distribuidora-group">
-          <h4>Empresa: {{ grupo.distribuidora }}</h4>
-          <table>
-            <thead>
-              <tr>
-                <th>Tramo</th>
-                <th>Precio kWh</th>
-                <th>Costo Equipo</th>
-                <th>Total (+ Fijo)</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (item of grupo.simulacion; track $index) {
+          <div class="distribuidora-header">
+            <h4>Empresa: <span>{{ grupo.distribuidora }}</span></h4>
+            <p class="cargo-fijo-badge">
+              Cargo Fijo: <strong>${{ grupo.cargo_fijo | number:'1.0-0' }}</strong>
+              <span class="tooltip-icon">
+                <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
+                <span class="tooltip-text">Costo base mensual por estar conectado a la red, independiente del consumo.</span>
+              </span>
+            </p>
+          </div>
+
+          <div class="table-responsive">
+            <table>
+              <thead>
                 <tr>
-                  <td>{{ item.tramo }}</td>
-                  <td>${{ item.tarifa_unitario }}</td>
-                  <td>${{ item.costo_solo_dispositivo }}</td>
-                  <td class="total-destacado">${{ item.total_estimado_con_cargo_fijo }}</td>
+                  <th>Tramo Tarifario</th>
+                  <th>Precio kWh</th>
+                  <th>
+                    Costo Equipo
+                    <span class="tooltip-icon">
+                      <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
+                      <span class="tooltip-text">Multiplicación del consumo del equipo en kWh por el precio del tramo.</span>
+                    </span>
+                  </th>
+                  <th>Total (+ Cargo Fijo)<span class="tooltip-icon">
+                      <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
+                      <span class="tooltip-text">
+                        <strong>Fórmula:</strong> Costo Equipo + Cargo Fijo Mensual.
+                      </span>
+                    </span>
+                  </th>
                 </tr>
-              }
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                @for (item of grupo.simulacion; track $index) {
+                  <tr>
+                    <td>{{ item.tramo }}</td>
+                    <td class="price-unit">${{ item.tarifa_unitario | number:'1.2-2' }}</td>
+                    <td>${{ item.costo_solo_dispositivo | number:'1.0-0' }}</td>
+                    <td class="total-destacado">${{ item.total_estimado_con_cargo_fijo | number:'1.0-0' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
         </div>
       }
-      <p class="footer-info">Actualizado: {{ res.meta.ultima_actualizacion | date:'dd/MM/yyyy' }}</p>
+      <p class="footer-info">Precios vigentes según último decreto: {{ res.meta.ultima_actualizacion | date:'dd/MM/yyyy' }}</p>
     </div>
   }
 </div>

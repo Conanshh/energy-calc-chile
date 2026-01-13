@@ -1,0 +1,34 @@
+name: Actualización Semanal de Tarifas
+on:
+  schedule:
+    # Se ejecuta todos los lunes a las 07:00 AM
+    - cron: '0 7 * * 1'
+  workflow_dispatch: # Permite ejecutarlo manualmente desde GitHub si quieres
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          
+      - name: Install Dependencies
+        run: npm install
+        
+      - name: Build Project
+        run: npm run build
+        
+      - name: Run Script
+        env:
+          # Aquí pasas tus variables de conexión a la BD
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          # Si usas host/user/pass separados:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+        run: npm run refresh-tarifas
