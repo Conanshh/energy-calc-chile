@@ -4,7 +4,7 @@
   margin: 2rem auto;
   padding: 0 20px;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  color: #2d3436;
+  color: var(--text-main); /* Cambiado de fijo a variable */
 }
 
 .header-section {
@@ -15,13 +15,13 @@
 .header-section h1 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
-  color: #2d3436;
+  color: var(--text-main); /* Cambiado de fijo a variable */
   font-weight: 800;
 }
 
 .header-section h1 span {
   background: linear-gradient(135deg, #007bff, #00d2ff);
-  background-clip: text; /* Estándar corregido */
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -43,15 +43,16 @@
 
 .form-content {
   width: 100%;
-  max-width: 480px; /* Evita que la barra sea gigante */
-  background: #ffffff;
+  max-width: 480px;
+  background: var(--bg-card); /* Cambiado de #ffffff a variable */
   padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.05);
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-  border: 1px solid #f1f2f6;
+  border: 1px solid var(--border-color); /* Cambiado de fijo a variable */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .input-label {
@@ -59,7 +60,7 @@
   margin-bottom: 6px;
   font-size: 0.95rem;
   font-weight: 700;
-  color: #2d3436;
+  color: var(--text-main); /* Cambiado de fijo a variable */
 }
 
 .inputs-grid {
@@ -73,17 +74,20 @@
   font-size: 0.85rem;
   font-weight: 700;
   margin-bottom: 6px;
-  color: #4a4a4a; /* Contraste mejorado */
+  color: var(--text-muted); /* Cambiado de fijo a variable */
   text-transform: uppercase;
 }
 
 input {
   width: 100%;
   padding: 12px;
-  border: 2px solid #e0e0e0;
+  border: 2px solid var(--input-border); /* Usamos variable para el borde del input */
+  background: var(--bg-card); /* Importante para que no brille en modo oscuro */
+  color: var(--text-main);    /* Texto del input */
   border-radius: 10px;
   font-size: 1rem;
   box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 
 input:focus {
@@ -99,7 +103,7 @@ input:focus {
   top: 105%;
   left: 0;
   right: 0;
-  background: white;
+  background: var(--bg-card); /* Cambiado a variable */
   border-radius: 10px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
   z-index: 1000;
@@ -108,21 +112,25 @@ input:focus {
   list-style: none;
   padding: 5px;
   margin: 0;
-  border: 1px solid #eee;
+  border: 1px solid var(--border-color); /* Cambiado a variable */
 }
 
 .suggestions-list li {
   padding: 12px 15px;
   border-radius: 8px;
   cursor: pointer;
+  color: var(--text-main);
 }
 
-.suggestions-list li:hover { background: #f0f7ff; color: #007bff; }
+.suggestions-list li:hover { 
+  background: rgba(0, 123, 255, 0.1); /* Efecto sutil que funciona en ambos modos */
+  color: #007bff; 
+}
 
 /* 4. BANNER DE ERROR */
 .error-banner {
-  background-color: #fff5f5;
-  color: #c0392b;
+  background-color: rgba(231, 76, 60, 0.1); /* Transparencia para que se adapte mejor */
+  color: #e74c3c;
   padding: 12px;
   border-radius: 8px;
   border-left: 4px solid #e74c3c;
@@ -132,12 +140,6 @@ input:focus {
   align-items: center;
   gap: 10px;
   animation: shake 0.4s ease-in-out;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
 }
 
 /* 5. BOTÓN */
@@ -159,28 +161,31 @@ input:focus {
 
 /* 6. RESULTADOS Y TABLAS */
 .distribuidora-group {
-  background: white;
+  background: var(--bg-card); /* Cambiado a variable */
   margin-top: 2rem;
   padding: 1.5rem;
   border-radius: 12px;
   border-left: 5px solid #007bff;
   box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  color: var(--text-main);
+  transition: background-color 0.3s ease;
 }
 
-.total-destacado { color: #27ae60; font-weight: 800; }
+.total-destacado { color: #2ecc71; font-weight: 800; } /* Un verde más brillante para dark mode */
 
 table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-th, td { padding: 12px; text-align: left; border-bottom: 1px solid #f1f2f6; }
+th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); }
+th { color: var(--text-muted); }
 
 /* FECHA (Footer) */
 .footer-info {
   text-align: right;
-  color: #2d3436; /* Mejorado */
+  color: var(--text-main); 
   font-size: 0.9rem;
   font-weight: 700;
   margin-top: 1.5rem;
   padding: 10px 15px;
-  background: #f1f2f6;
+  background: var(--border-color); /* Usamos el color de borde como fondo sutil */
   border-radius: 8px;
   display: block;
 }
@@ -190,7 +195,7 @@ th, td { padding: 12px; text-align: left; border-bottom: 1px solid #f1f2f6; }
   display: inline-flex;
   width: 18px;
   height: 18px;
-  background: #dfe6e9;
+  background: var(--border-color); /* Variable */
   border-radius: 50%;
   font-size: 11px;
   align-items: center;
@@ -198,13 +203,14 @@ th, td { padding: 12px; text-align: left; border-bottom: 1px solid #f1f2f6; }
   cursor: help;
   position: relative;
   margin-left: 6px;
+  color: var(--text-main);
 }
 
 .tooltip-text {
   visibility: hidden;
   width: 220px;
   background: #2d3436;
-  color: white;
+  color: white; /* El tooltip suele quedarse oscuro siempre para contraste */
   padding: 10px;
   border-radius: 8px;
   position: absolute;
@@ -214,7 +220,7 @@ th, td { padding: 12px; text-align: left; border-bottom: 1px solid #f1f2f6; }
   opacity: 0;
   transition: opacity 0.2s;
   font-weight: normal;
+  z-index: 10;
 }
 
 .tooltip-icon:hover .tooltip-text { visibility: visible; opacity: 1; }
-
