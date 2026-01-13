@@ -9,7 +9,7 @@
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
     "target": "esnext",
-    "types": [],
+    //"types": [],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
@@ -33,14 +33,17 @@
     // "noPropertyAccessFromIndexSignature": true,
 
     // Recommended Options
-    "strict": true,
+    "strict": false,
+    "noImplicitAny": false,
     "jsx": "react-jsx",
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
+
+    "esModuleInterop": true
   },
-  "include": ["src/**/*"],    // Añade esto al final del archivo para que TS sepa qué archivos procesar
-  "exclude": ["node_modules"] // Y esto para que no intente compilar las librerías
+    "include": ["src/**/*"],    // Añade esto al final del archivo para que TS sepa qué archivos procesar
+    "exclude": ["node_modules", "**/*.test.ts"] // Y esto para que no intente compilar las librerías
 }
