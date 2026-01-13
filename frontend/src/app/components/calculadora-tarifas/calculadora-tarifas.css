@@ -255,3 +255,88 @@ th { color: var(--text-muted); }
   border-style: solid;
   border-color: #2d3436 transparent transparent transparent;
 }
+
+/* 8. MODAL DE CARGA */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  padding: 3rem 2rem;
+  border-radius: 24px;
+  text-align: center;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-color);
+}
+
+.modal-content h3 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.4rem;
+  color: var(--text-main);
+}
+
+.modal-content p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  min-height: 1.5em; /* Evita que el modal salte cuando cambia el texto */
+}
+
+/* Círculo de Carga */
+.loader-circle {
+  width: 60px;
+  height: 60px;
+  border: 5px solid var(--border-color);
+  border-top: 5px solid #007bff;
+  border-radius: 50%;
+  margin: 0 auto;
+  animation: spin 1s linear infinite;
+}
+
+/* Barra de progreso sutil */
+.progress-track {
+  width: 100%;
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 10px;
+  margin-top: 2rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, #007bff, #00d2ff);
+  border-radius: 10px;
+  position: absolute;
+  animation: progressMove 2s infinite ease-in-out;
+}
+
+@keyframes spin { 
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes progressMove {
+  0% { left: -40%; }
+  100% { left: 100%; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
