@@ -173,6 +173,13 @@ input:focus {
 
 .total-destacado { color: #2ecc71; font-weight: 800; } /* Un verde más brillante para dark mode */
 
+/* La columna que queremos que brille */
+.gasto-extra-destacado {
+  color: #2ecc71; /* Verde esmeralda llamativo */
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
 table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
 th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); }
 th { color: var(--text-muted); }

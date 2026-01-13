@@ -13,6 +13,7 @@ export const calcularConsumoDispositivo = async (
   if (horasPorDia > 24 || horasPorDia <= 0) throw new Error("Horas no pueden ser > 24.");
   if (watts <= 0) throw new Error("Watts debe ser positivo.");
 
+  // Mantener precisión decimal en el consumo
   const consumoMensualKwh = (watts * horasPorDia * diasMes) / 1000;
   const lowerComuna = comuna.trim().toLowerCase();
 
@@ -25,42 +26,36 @@ export const calcularConsumoDispositivo = async (
   let debeScrapear = false;
 
   if (resComuna.rows.length === 0) {
-    // Si la comuna no existe en nuestra DB, hay que buscarla afuera
     debeScrapear = true;
   } else {
-    // Si existe, revisamos qué tan vieja es la información.
-    // Usamos 15 días de margen para dar prioridad a la DB sobre el scraping lento.
     const ultimaAct = new Date(resComuna.rows[0].ultima_actualizacion);
     const diffDias = (new Date().getTime() - ultimaAct.getTime()) / (1000 * 3600 * 24);
     
+    // Si la data tiene más de 15 días, intentamos refrescarla
     if (diffDias > 15) {
-      console.log(`⚠️ Datos de ${lowerComuna} antiguos (${Math.round(diffDias)} días). Actualizando...`);
+      console.log(`⚠️ Datos de ${lowerComuna} antiguos (${Math.round(diffDias)} días).`);
       debeScrapear = true;
     }
   }
 
-  // 3. Ejecutar Scraper solo si es estrictamente necesario
+  // 3. Ejecutar Scraper de emergencia si es necesario
   if (debeScrapear) {
     try {
-      console.log(`☁️ Iniciando scraping de emergencia para: ${lowerComuna}`);
+      console.log(`☁️ Iniciando scraping para: ${lowerComuna}`);
       const scraped = await scrapeTarifas(comuna);
       
       if (scraped && scraped.length > 0) {
         await saveTarifasByComuna(comuna, scraped);
-      } else {
-        // Si el scraper falla pero tenemos datos viejos en la DB, los usamos igual
-        if (resComuna.rows.length === 0) {
-          throw new Error("No se pudo obtener datos y no hay registros previos.");
-        }
-        console.warn("Fallo el scraping, se usarán datos antiguos de la DB.");
+      } else if (resComuna.rows.length === 0) {
+        throw new Error("No se pudo obtener datos y no hay registros previos.");
       }
     } catch (error) {
-      console.error("Error en proceso de scraping de rescate:", error);
+      console.error("Error en proceso de scraping:", error);
       if (resComuna.rows.length === 0) throw error;
     }
   }
 
-  // 4. Recuperar datos finales de la DB (lo que ya existía o lo recién guardado)
+  // 4. Recuperar datos finales de la DB
   const resData = await query(
     `SELECT t.rango_texto, t.valor_kwh, t.distribuidora, t.cargo_fijo, c.ultima_actualizacion 
      FROM tarifas t 
@@ -73,7 +68,7 @@ export const calcularConsumoDispositivo = async (
     throw new Error("No se encontraron tarifas disponibles para esta comuna.");
   }
 
-  // 5. Agrupar resultados por Distribuidora
+  // 5. Agrupar resultados por Distribuidora con ALTA PRECISIÓN
   const gruposMap = new Map();
 
   resData.rows.forEach(row => {
@@ -88,13 +83,18 @@ export const calcularConsumoDispositivo = async (
     }
 
     const valorUnitario = Number(row.valor_kwh);
-    const costoVariable = consumoMensualKwh * valorUnitario;
+    const cargoFijoNum = Number(row.cargo_fijo);
+    
+    // CAMBIO CLAVE: No redondear el costo variable aquí
+    const costoVariableExacto = consumoMensualKwh * valorUnitario;
 
     gruposMap.get(nombreDist).simulacion.push({
       tramo: row.rango_texto,
       tarifa_unitario: valorUnitario,
-      costo_solo_dispositivo: Math.round(costoVariable),
-      total_estimado_con_cargo_fijo: Math.round(costoVariable + Number(row.cargo_fijo))
+      // Enviamos el valor con decimales al front para que el cálculo sea transparente
+      costo_solo_dispositivo: costoVariableExacto, 
+      // Sumamos primero los valores exactos y LUEGO redondeamos para el total final
+      total_estimado_con_cargo_fijo: Math.round(costoVariableExacto + cargoFijoNum)
     });
   });
 
@@ -106,7 +106,8 @@ export const calcularConsumoDispositivo = async (
     },
     dispositivo: {
       potencia_watts: watts,
-      consumo_total_mes_kwh: Number(consumoMensualKwh.toFixed(2))
+      // Usamos toFixed(4) internamente para no perder precisión en el objeto
+      consumo_total_mes_kwh: Number(consumoMensualKwh.toFixed(4))
     },
     grupos: Array.from(gruposMap.values())
   };

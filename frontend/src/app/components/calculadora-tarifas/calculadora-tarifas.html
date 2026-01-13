@@ -79,7 +79,7 @@
       <div class="main-summary">
         <h3>Resumen para {{ res.meta.comuna }}</h3>
         <p class="consumo-total">
-          Consumo del equipo: <strong>{{ res.dispositivo.consumo_total_mes_kwh }} kWh/mes</strong>
+          Consumo del equipo en el mes: <strong>{{ res.dispositivo.consumo_total_mes_kwh }} kWh/mes</strong>
           <span class="tooltip-icon">
             <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
             <span class="tooltip-text">
@@ -109,19 +109,21 @@
                   <th>Tramo Tarifario</th>
                   <th>Precio kWh</th>
                   <th>
-                    Costo Equipo
+                    Gasto Adicional del Dispositivo
                     <span class="tooltip-icon">
                       <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
-                      <span class="tooltip-text">Multiplicación del consumo del equipo en kWh por el precio del tramo.</span>
+                      <span class="tooltip-text">Multiplicación del consumo del equipo en el mes (en kWh) por el precio del tramo.</span>
                     </span>
                   </th>
-                  <th>Total (+ Cargo Fijo)<span class="tooltip-icon">
-                      <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
-                      <span class="tooltip-text">
-                        <strong>Fórmula:</strong> Costo Equipo + Cargo Fijo Mensual.
+                  <th>
+                      Sub Total Mensual
+                      <span class="tooltip-icon">
+                        <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
+                        <span class="tooltip-text">
+                          <strong>Fórmula:</strong> Gasto Adicional del Dispositivo + Cargo Fijo Mensual.
+                        </span>
                       </span>
-                    </span>
-                  </th>
+                    </th>
                 </tr>
               </thead>
               <tbody>
@@ -129,8 +131,8 @@
                   <tr>
                     <td>{{ item.tramo }}</td>
                     <td class="price-unit">${{ item.tarifa_unitario | number:'1.2-2' }}</td>
-                    <td>${{ item.costo_solo_dispositivo | number:'1.0-0' }}</td>
-                    <td class="total-destacado">${{ item.total_estimado_con_cargo_fijo | number:'1.0-0' }}</td>
+                    <td class="gasto-extra-destacado">${{ item.costo_solo_dispositivo | number:'1.2-2' }}</td>
+                    <td>${{ item.total_estimado_con_cargo_fijo | number:'1.0-0' }}</td>
                   </tr>
                 }
               </tbody>
