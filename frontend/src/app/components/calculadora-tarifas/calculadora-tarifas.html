@@ -30,15 +30,35 @@
 
       <div class="inputs-grid">
         <div class="input-group">
-          <label>Watts</label>
+          <label>
+            Watts
+            <span class="tooltip-icon">
+              <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
+              <span class="tooltip-text">Potencia eléctrica del dispositivo (revisa la etiqueta del producto).</span>
+            </span>
+          </label>
           <input type="number" [(ngModel)]="watts" placeholder="0">
         </div>
+
         <div class="input-group">
-          <label>Hrs/día</label>
+          <label>
+            Hrs/día
+            <span class="tooltip-icon">
+              <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
+              <span class="tooltip-text">¿Cuántas <strong>horas al día</strong> estará encendido el equipo normalmente?</span>
+            </span>
+          </label>
           <input type="number" [(ngModel)]="horas" placeholder="0">
         </div>
+
         <div class="input-group">
-          <label>Días/mes</label>
+          <label>
+            Días/mes
+            <span class="tooltip-icon">
+              <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
+              <span class="tooltip-text">Días de uso en un mes (ejemplo: 31 días, 2 días, etc).</span>
+            </span>
+          </label>
           <input type="number" [(ngModel)]="dias" placeholder="30">
         </div>
       </div>
@@ -70,7 +90,8 @@
         <h3>Resumen para {{ res.meta.comuna }}</h3>
         <p class="consumo-total">
           Consumo del equipo: <strong>{{ res.dispositivo.consumo_total_mes_kwh }} kWh/mes</strong>
-          <span class="tooltip-icon">ⓘ
+          <span class="tooltip-icon">
+            <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
             <span class="tooltip-text">
               <strong>Fórmula:</strong> ({{res.dispositivo.potencia_watts}}W × {{horas()}}h × {{dias()}}d) / 1000
             </span>
@@ -84,7 +105,8 @@
             <h4>Empresa: <span>{{ grupo.distribuidora }}</span></h4>
             <p class="cargo-fijo">
               Cargo Fijo: <strong>${{ grupo.cargo_fijo | number:'1.0-0' }}</strong>
-              <span class="tooltip-icon">ⓘ
+              <span class="tooltip-icon">
+                <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
                 <span class="tooltip-text">Monto base mensual de la empresa.</span>
               </span>
             </p>
@@ -96,7 +118,13 @@
                 <tr>
                   <th>Tramo Global</th>
                   <th>Precio kWh</th>
-                  <th>Costo Equipo</th>
+                  <th>
+                    Costo Equipo
+                    <span class="tooltip-icon">
+                      <lucide-icon [img]="InfoIcon" [size]="14" [strokeWidth]="2.5"></lucide-icon>
+                      <span class="tooltip-text">Calculado multiplicando el <strong>Consumo del equipo (kWh)</strong> por el <strong>Precio del tramo</strong>.</span>
+                    </span>
+                  </th>
                   <th>Total con Cargo Fijo</th>
                 </tr>
               </thead>

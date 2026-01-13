@@ -193,34 +193,65 @@ th { color: var(--text-muted); }
 /* 7. TOOLTIPS */
 .tooltip-icon {
   display: inline-flex;
-  width: 18px;
-  height: 18px;
-  background: var(--border-color); /* Variable */
+  vertical-align: middle; /* Alinea el icono ⓘ con el texto del label */
+  width: 16px;           /* Tamaño ligeramente más pequeño para etiquetas */
+  height: 16px;
+  background: var(--border-color); 
   border-radius: 50%;
-  font-size: 11px;
+  font-size: 10px;       /* Tamaño de la letra 'i' */
   align-items: center;
   justify-content: center;
   cursor: help;
   position: relative;
   margin-left: 6px;
   color: var(--text-main);
+  font-weight: bold;
 }
 
 .tooltip-text {
   visibility: hidden;
-  width: 220px;
-  background: #2d3436;
-  color: white; /* El tooltip suele quedarse oscuro siempre para contraste */
+  width: 200px;         /* Un poco más angosto para no tapar todo */
+  background: #2d3436;  /* Fondo oscuro constante para lectura clara */
+  color: #ffffff; 
   padding: 10px;
   border-radius: 8px;
   position: absolute;
-  bottom: 130%;
+  bottom: 150%;         /* Lo sube un poco más para que no tape el icono */
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
-  transition: opacity 0.2s;
-  font-weight: normal;
-  z-index: 10;
+  transition: opacity 0.2s, transform 0.2s; /* Animación más fluida */
+  
+  /* RESET DE TEXTO: Muy importante para labels y tablas */
+  text-transform: none; /* Cancela el uppercase del label padre */
+  font-weight: 400;     /* Cancela el bold del label padre */
+  font-size: 0.85rem;   /* Tamaño de lectura cómodo */
+  line-height: 1.4;     /* Espaciado entre líneas */
+  white-space: normal;  /* Permite saltos de línea */
+  text-align: center;
+  
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 100;         /* Asegura que flote sobre todo */
+  pointer-events: none; /* Evita que el mouse interactúe con el tooltip vacío */
+  bottom: 160%;
 }
 
-.tooltip-icon:hover .tooltip-text { visibility: visible; opacity: 1; }
+/* Efecto al pasar el mouse */
+.tooltip-icon:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(-5px);
+
+}
+
+/* Triangulito del tooltip (Opcional, pero se ve pro) */
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #2d3436 transparent transparent transparent;
+}

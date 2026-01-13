@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { TarifaService } from '../../services/tarifa.service';
 import { RespuestaCalculo } from '../../models/tarifa.model';
 import { COMUNAS_CHILE } from '../../models/comunas.data';
+import { LucideAngularModule, Info } from 'lucide-angular';
 
 @Component({
   selector: 'app-calculadora-tarifas',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, LucideAngularModule],
   templateUrl: './calculadora-tarifas.html',
   styleUrl: './calculadora-tarifas.css'
 })
@@ -17,6 +18,7 @@ export class CalculadoraTarifasComponent {
   
   // Datos estáticos
   listaComunas = COMUNAS_CHILE;
+  readonly InfoIcon = Info; // Declara el icono para usarlo en el HTML
   
   // Signals de estado del formulario
   comuna = signal('');
