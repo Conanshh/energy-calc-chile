@@ -19,6 +19,10 @@ app.use(cors({
 
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.send('🚀 API de Calculadora Energética Chile - Operacional');
+});
+
 // Montar Rutas
 // Todas las rutas dentro de tarifasRoutes empezarán con /api/tarifas
 app.use('/api/tarifas', tarifasRoutes);
