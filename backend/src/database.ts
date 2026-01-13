@@ -5,17 +5,23 @@ dotenv.config();
 
 const { Pool } = pg;
 
-// El Pool gestiona múltiples conexiones de forma eficiente
+// Verificamos si tenemos la URL completa (Neon/Nube) o datos sueltos (Local)
+const connectionString = process.env.DATABASE_URL;
+
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: Number(process.env.DB_PORT),
+  connectionString: connectionString,
+  // Para la nube:
+  ssl: connectionString?.includes('neon.tech') 
+    ? { rejectUnauthorized: false } 
+    : false
 });
 
 export const query = (text: string, params?: any[]) => pool.query(text, params);
 
 pool.on('connect', () => {
-  console.log('Conectado a la base de datos PostgreSQL 🐘');
+  console.log('✅ Conexión establecida con PostgreSQL');
+});
+
+pool.on('error', (err) => {
+  console.error('❌ Error inesperado en el pool de la DB', err);
 });

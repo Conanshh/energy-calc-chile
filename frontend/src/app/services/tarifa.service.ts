@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,7 @@ export class TarifaService {
   private http = inject(HttpClient);
   
   // La URL de tu backend
-  private apiUrl = 'http://localhost:3000/api/tarifas/calcular';
-
+  private apiUrl = `${environment.apiUrl}/tarifas/calcular`;
   /**
    * Método para llamar a nuestra API de Node.js
    */
