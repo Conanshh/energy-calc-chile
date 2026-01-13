@@ -1,4 +1,4 @@
 export const environment = {
-    production: false,
-    apiUrl: 'https://tu-backend-en-render.onrender.com/api'
+    production: true,
+    apiUrl: 'https://energy-calc-chile-backend.onrender.com/api'
 };
