@@ -1,21 +1,21 @@
 /* 1. BASE Y CONTENEDORES */
 .calculator-container {
   max-width: 900px;
-  margin: 2rem auto;
+  margin: 0.1rem auto;
   padding: 0 20px;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  color: var(--text-main); /* Cambiado de fijo a variable */
+  color: var(--text-main);
 }
 
 .header-section {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .header-section h1 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   margin-bottom: 0.5rem;
-  color: var(--text-main); /* Cambiado de fijo a variable */
+  color: var(--text-main);
   font-weight: 800;
 }
 
@@ -30,11 +30,53 @@
   width: 60px;
   height: 4px;
   background: #007bff;
-  margin: 0 auto;
+  margin: 0 auto 1rem;
   border-radius: 2px;
 }
 
-/* 2. FORMULARIO (Ancho controlado) */
+/* 2. TARJETA INFORMATIVA (NUEVO - Mejora visual del texto) */
+.info-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 1rem 1.5rem;
+  max-width: 700px;
+  margin: 0 auto 1.5rem;
+  text-align: left;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.description-text {
+  color: var(--text-main);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  text-wrap: pretty; /* Clave para evitar los espacios blancos desiguales */
+}
+
+.how-it-works {
+  border-top: 1px solid var(--border-color);
+  padding-top: 1rem;
+}
+
+.how-it-works strong {
+  color: #007bff;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.how-it-works p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin: 0;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+/* 3. FORMULARIO */
 .form-wrapper {
   display: flex;
   justify-content: center;
@@ -44,23 +86,15 @@
 .form-content {
   width: 100%;
   max-width: 480px;
-  background: var(--bg-card); /* Cambiado de #ffffff a variable */
+  background: var(--bg-card);
   padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.05);
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-  border: 1px solid var(--border-color); /* Cambiado de fijo a variable */
+  border: 1px solid var(--border-color);
   transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.input-label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--text-main); /* Cambiado de fijo a variable */
 }
 
 .inputs-grid {
@@ -69,21 +103,12 @@
   gap: 15px;
 }
 
-.input-group label {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 700;
-  margin-bottom: 6px;
-  color: var(--text-muted); /* Cambiado de fijo a variable */
-  text-transform: uppercase;
-}
-
 input {
   width: 100%;
   padding: 12px;
-  border: 2px solid var(--input-border); /* Usamos variable para el borde del input */
-  background: var(--bg-card); /* Importante para que no brille en modo oscuro */
-  color: var(--text-main);    /* Texto del input */
+  border: 2px solid var(--input-border);
+  background: var(--bg-card);
+  color: var(--text-main);
   border-radius: 10px;
   font-size: 1rem;
   box-sizing: border-box;
@@ -95,54 +120,94 @@ input:focus {
   border-color: #007bff;
 }
 
-/* 3. AUTOCOMPLETE */
-.autocomplete-container { position: relative; }
-
-.suggestions-list {
-  position: absolute;
-  top: 105%;
-  left: 0;
-  right: 0;
-  background: var(--bg-card); /* Cambiado a variable */
-  border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-  z-index: 1000;
-  max-height: 200px;
-  overflow-y: auto;
-  list-style: none;
-  padding: 5px;
-  margin: 0;
-  border: 1px solid var(--border-color); /* Cambiado a variable */
-}
-
-.suggestions-list li {
-  padding: 12px 15px;
-  border-radius: 8px;
-  cursor: pointer;
+/* 4. RESULTADOS Y TABLAS */
+.distribuidora-group {
+  background: var(--bg-card);
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border-left: 5px solid #007bff;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
   color: var(--text-main);
 }
 
-.suggestions-list li:hover { 
-  background: rgba(0, 123, 255, 0.1); /* Efecto sutil que funciona en ambos modos */
-  color: #007bff; 
+.gasto-extra-destacado {
+  color: #2ecc71;
+  font-weight: 700;
+  font-size: 1.05rem;
 }
 
-/* 4. BANNER DE ERROR */
-.error-banner {
-  background-color: rgba(231, 76, 60, 0.1); /* Transparencia para que se adapte mejor */
-  color: #e74c3c;
-  padding: 12px;
-  border-radius: 8px;
-  border-left: 4px solid #e74c3c;
-  font-size: 0.9rem;
-  font-weight: 600;
-  display: flex;
+table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  margin-top: 1rem; 
+}
+
+th, td { 
+  padding: 12px; 
+  text-align: left; 
+  border-bottom: 1px solid var(--border-color); 
+}
+
+/* 5. TOOLTIPS */
+.tooltip-icon {
+  display: inline-flex;
+  vertical-align: middle;
+  width: 16px;
+  height: 16px;
+  background: var(--border-color); 
+  border-radius: 50%;
+  font-size: 10px;
   align-items: center;
-  gap: 10px;
-  animation: shake 0.4s ease-in-out;
+  justify-content: center;
+  cursor: help;
+  position: relative;
+  margin-left: 6px;
+  color: var(--text-main);
 }
 
-/* 5. BOTÓN */
+.tooltip-text {
+  visibility: hidden;
+  width: 220px;
+  background: #2d3436;
+  color: #ffffff; 
+  padding: 10px;
+  border-radius: 8px;
+  position: absolute;
+  bottom: 160%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  text-transform: none;
+  font-weight: 400;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  z-index: 100;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.tooltip-icon:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+/* 6. MODAL DE CARGA Y ANIMACIONES */
+.loader-circle {
+  width: 60px;
+  height: 60px;
+  border: 5px solid var(--border-color);
+  border-top: 5px solid #007bff;
+  border-radius: 50%;
+  margin: 0 auto;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin { 
+  100% { transform: rotate(360deg); }
+}
+
 .btn-calc {
   background: #007bff;
   color: white;
@@ -159,191 +224,23 @@ input:focus {
   transform: translateY(-2px); 
 }
 
-/* 6. RESULTADOS Y TABLAS */
-.distribuidora-group {
-  background: var(--bg-card); /* Cambiado a variable */
-  margin-top: 2rem;
-  padding: 1.5rem;
-  border-radius: 12px;
-  border-left: 5px solid #007bff;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-  color: var(--text-main);
-  transition: background-color 0.3s ease;
+.external-link {
+  color: #00d2ff !important; /* Un celeste brillante que destaca en el dark mode */
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px dashed rgba(0, 210, 255, 0.4);
+  transition: all 0.2s ease;
 }
 
-.total-destacado { color: #2ecc71; font-weight: 800; } /* Un verde más brillante para dark mode */
-
-/* La columna que queremos que brille */
-.gasto-extra-destacado {
-  color: #2ecc71; /* Verde esmeralda llamativo */
-  font-weight: 700;
-  font-size: 1.05rem;
+/* Esto evita que se ponga morado/oscuro después de hacer click */
+.external-link:visited {
+  color: #00d2ff !important;
 }
 
-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); }
-th { color: var(--text-muted); }
-
-/* FECHA (Footer) */
-.footer-info {
-  text-align: right;
-  color: var(--text-main); 
-  font-size: 0.9rem;
-  font-weight: 700;
-  margin-top: 1.5rem;
-  padding: 10px 15px;
-  background: var(--border-color); /* Usamos el color de borde como fondo sutil */
-  border-radius: 8px;
-  display: block;
-}
-
-/* 7. TOOLTIPS */
-.tooltip-icon {
-  display: inline-flex;
-  vertical-align: middle; /* Alinea el icono ⓘ con el texto del label */
-  width: 16px;           /* Tamaño ligeramente más pequeño para etiquetas */
-  height: 16px;
-  background: var(--border-color); 
-  border-radius: 50%;
-  font-size: 10px;       /* Tamaño de la letra 'i' */
-  align-items: center;
-  justify-content: center;
-  cursor: help;
-  position: relative;
-  margin-left: 6px;
-  color: var(--text-main);
-  font-weight: bold;
-}
-
-.tooltip-text {
-  visibility: hidden;
-  width: 200px;         /* Un poco más angosto para no tapar todo */
-  background: #2d3436;  /* Fondo oscuro constante para lectura clara */
-  color: #ffffff; 
-  padding: 10px;
-  border-radius: 8px;
-  position: absolute;
-  bottom: 150%;         /* Lo sube un poco más para que no tape el icono */
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.2s, transform 0.2s; /* Animación más fluida */
-  
-  /* RESET DE TEXTO: Muy importante para labels y tablas */
-  text-transform: none; /* Cancela el uppercase del label padre */
-  font-weight: 400;     /* Cancela el bold del label padre */
-  font-size: 0.85rem;   /* Tamaño de lectura cómodo */
-  line-height: 1.4;     /* Espaciado entre líneas */
-  white-space: normal;  /* Permite saltos de línea */
-  text-align: center;
-  
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  z-index: 100;         /* Asegura que flote sobre todo */
-  pointer-events: none; /* Evita que el mouse interactúe con el tooltip vacío */
-  bottom: 160%;
-}
-
-/* Efecto al pasar el mouse */
-.tooltip-icon:hover .tooltip-text {
-  visibility: visible;
-  opacity: 1;
-  transform: translateX(-50%) translateY(-5px);
-
-}
-
-/* Triangulito del tooltip (Opcional, pero se ve pro) */
-.tooltip-text::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #2d3436 transparent transparent transparent;
-}
-
-/* 8. MODAL DE CARGA */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(5px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  animation: fadeIn 0.3s ease;
-}
-
-.modal-content {
-  background: var(--bg-card);
-  padding: 3rem 2rem;
-  border-radius: 24px;
-  text-align: center;
-  max-width: 420px;
-  width: 90%;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  border: 1px solid var(--border-color);
-}
-
-.modal-content h3 {
-  margin: 1.5rem 0 0.5rem;
-  font-size: 1.4rem;
-  color: var(--text-main);
-}
-
-.modal-content p {
-  color: var(--text-muted);
-  font-size: 1rem;
-  min-height: 1.5em; /* Evita que el modal salte cuando cambia el texto */
-}
-
-/* Círculo de Carga */
-.loader-circle {
-  width: 60px;
-  height: 60px;
-  border: 5px solid var(--border-color);
-  border-top: 5px solid #007bff;
-  border-radius: 50%;
-  margin: 0 auto;
-  animation: spin 1s linear infinite;
-}
-
-/* Barra de progreso sutil */
-.progress-track {
-  width: 100%;
-  height: 6px;
-  background: var(--border-color);
-  border-radius: 10px;
-  margin-top: 2rem;
-  overflow: hidden;
-  position: relative;
-}
-
-.progress-bar {
-  width: 40%;
-  height: 100%;
-  background: linear-gradient(90deg, #007bff, #00d2ff);
-  border-radius: 10px;
-  position: absolute;
-  animation: progressMove 2s infinite ease-in-out;
-}
-
-@keyframes spin { 
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes progressMove {
-  0% { left: -40%; }
-  100% { left: 100%; }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.external-link:hover {
+  color: #ffffff !important;
+  border-bottom: 1px solid #ffffff;
+  background: rgba(0, 210, 255, 0.1);
+  border-radius: 4px;
+  padding: 0 4px;
 }
